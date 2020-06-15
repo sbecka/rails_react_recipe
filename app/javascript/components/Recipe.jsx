@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 
-function Recipe () {
+function Recipe() {
     const [recipe, setRecipe] = useState({ingredients:''});
     let { id } = useParams();
     let history = useHistory();
