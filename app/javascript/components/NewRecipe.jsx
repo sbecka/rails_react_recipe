@@ -5,7 +5,8 @@ function NewRecipe() {
     const [recipe, setRecipe] = useState({
         name: '',
         ingredients: '',
-        instruction: ''
+        instruction: '',
+        image: ''
     });
 
     let history = useHistory();
@@ -18,19 +19,29 @@ function NewRecipe() {
                 return {
                   name: value,
                   ingredients: previousValue.ingredients,
-                  instruction: previousValue.instruction
+                  instruction: previousValue.instruction,
+                  image: previousValue.image
                 };
               } else if (name === 'ingredients') {
                 return {
                   name: previousValue.name,
                   ingredients: value,
-                  instruction: previousValue.instruction
+                  instruction: previousValue.instruction,
+                  image: previousValue.image
                 };
               } else if (name === 'instruction') {
                 return {
                   name: previousValue.name,
                   ingredients: previousValue.ingredients,
-                  instruction: value
+                  instruction: value,
+                  image: previousValue.image
+                };
+              } else if (name === 'image') {
+                return {
+                  name: previousValue.name,
+                  ingredients: previousValue.ingredients,
+                  instruction: previousValue.instruction,
+                  image: value
                 };
               }
         })
@@ -39,7 +50,7 @@ function NewRecipe() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const url = '/api/v1/recipes/create';
-        const { name, ingredients, instruction } = recipe;
+        const { name, ingredients, instruction, image } = recipe;
 
         if (name.length == 0 || ingredients.length == 0 || instruction.length == 0)
             return;
@@ -47,7 +58,8 @@ function NewRecipe() {
         const body = {
             name,
             ingredients,
-            instruction
+            instruction,
+            image
         };
         
         // To protect against Cross-Site Request Forgery (CSRF) attacks, Rails attaches a CSRF security token to the HTML document.
@@ -83,23 +95,23 @@ function NewRecipe() {
                         <div className="form-group">
                             <label htmlFor="recipeName">Recipe name</label>
                             <input
-                            type="text"
-                            name="name"
-                            id="recipeName"
-                            className="form-control"
-                            required
-                            onChange={handleRecipe}
+                                type="text"
+                                name="name"
+                                id="recipeName"
+                                className="form-control"
+                                required
+                                onChange={handleRecipe}
                             />
                         </div>
                         <div className="form-group">
                             <label htmlFor="recipeIngredients">Ingredients</label>
                             <input
-                            type="text"
-                            name="ingredients"
-                            id="recipeIngredients"
-                            className="form-control"
-                            required
-                            onChange={handleRecipe}
+                                type="text"
+                                name="ingredients"
+                                id="recipeIngredients"
+                                className="form-control"
+                                required
+                                onChange={handleRecipe}
                             />
                             <small id="ingredientsHelp" className="form-text text-muted">
                                 Separate each ingredient with a comma.
@@ -114,6 +126,16 @@ function NewRecipe() {
                             required
                             onChange={handleRecipe}
                         />
+                        <div className="form-group">
+                            <label htmlFor="image">Enter Image URL</label>
+                            <input
+                                type="text"
+                                name="image"
+                                id="image"
+                                className="form-control"
+                                onChange={handleRecipe}
+                            />
+                        </div>
                         <button type="submit" className="btn custom-button mt-3">
                             Create Recipe
                         </button>
