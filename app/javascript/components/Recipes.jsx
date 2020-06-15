@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 function Recipes() {
     const [recipes, setRecipes] = useState([]);
+    let history = useHistory();
 
     useEffect(() => {
         const url = '/api/v1/recipes/index';
@@ -14,7 +15,7 @@ function Recipes() {
                 throw new Error('Response not ok.')
             })
             .then(res => setRecipes(res))
-            .catch(() => this.props.history.push('/'))
+            .catch(() => history.push('/'))
     }, [])
 
     const allRecipes = recipes.map((recipe, index) => (

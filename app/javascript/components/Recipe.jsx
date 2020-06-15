@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useParams, useHistory } from "react-router-dom";
 
 function Recipe () {
-    const [recipe, setRecipe] = useState({ recipe: { ingredients:'' } });
+    const [recipe, setRecipe] = useState({ingredients:''});
+    let { id } = useParams();
+    let history = useHistory();
 
     useEffect(() => {
-        const id = this.props.match.params.id;
-        console.log(id);
         const url = `/api/v1/show/${id}`;
         fetch(url)
             .then(res => {
@@ -15,8 +15,8 @@ function Recipe () {
                 }
                 throw new Error('Response not ok.')
             })
-            .then(res => setRecipe({ recipe: res }))
-            .catch(() => this.props.history.push('/recipes'))
+            .then(res => setRecipe(res))
+            .catch(() => history.push('/recipes'))
     }, [])
 
     const addHTMLEntities = (str) => {
@@ -28,7 +28,7 @@ function Recipe () {
     let ingredientList = "No ingredients available";
 
     if (recipe.ingredients.length > 0) {
-      ingredientList = recipe.ingredients
+        ingredientList = recipe.ingredients
         .split(",")
         .map((ingredient, index) => (
           <li key={index} className="list-group-item">
